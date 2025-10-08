@@ -99,7 +99,8 @@
 			const windowHeight = window.innerHeight;
 			const imgHeight = fallingImg.offsetHeight;
 			// 画像が画面下まで到達したら即リセット
-			if (top > windowHeight - imgHeight) {
+			// 画像の上端が画面下端に到達したらリセット
+			if (top > windowHeight) {
 				falling = false;
 				fallingImg.style.top = '0px';
 				requestAnimationFrame(() => {
