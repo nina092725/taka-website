@@ -18,8 +18,10 @@
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%, -50%);
-			width: 220px;
-			height: 280px;
+			max-width: 90vw;
+			max-height: 70vh;
+			width: auto;
+			height: auto;
 			opacity: 0.3;
 			filter: grayscale(100%) blur(2px);
 			z-index: 1;
@@ -30,11 +32,53 @@
 			left: 50%;
 			top: 0;
 			transform: translateX(-50%);
-			width: 220px;
-			height: 280px;
+			max-width: 90vw;
+			max-height: 70vh;
+			width: auto;
+			height: auto;
 			z-index: 2;
 			cursor: pointer;
 			transition: box-shadow 0.2s;
+			object-fit: contain;
+		}
+		.side-line {
+			position: absolute;
+			top: 0;
+			width: 6px;
+			height: 100vh;
+			background: linear-gradient(to bottom, #e0e0e0 60%, #ffd700 100%);
+			z-index: 0;
+		}
+		.side-line.left {
+			left: 0;
+		}
+		.side-line.right {
+			right: 0;
+		}
+		.side-icons {
+			position: absolute;
+			top: 0;
+			width: 40px;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: center;
+			z-index: 1;
+			pointer-events: none;
+		}
+		.side-icons.left {
+			left: 0;
+		}
+		.side-icons.right {
+			right: 0;
+		}
+		.side-icon-img {
+			width: 32px;
+			height: 32px;
+			margin: 8px 0;
+			object-fit: contain;
+			opacity: 0.95;
 		}
 		.falling-img.active {
 			box-shadow: 0 0 20px 5px #4caf50;
@@ -62,6 +106,22 @@
 	</style>
 </head>
 <body>
+	<div class="side-line left"></div>
+	<div class="side-line right"></div>
+	<div class="side-icons left">
+		<img src="gyoza.png" class="side-icon-img" alt="餃子">
+		<img src="gacha.png" class="side-icon-img" alt="ガチャガチャ">
+		<img src="gyoza.png" class="side-icon-img" alt="餃子">
+		<img src="gacha.png" class="side-icon-img" alt="ガチャガチャ">
+		<img src="gyoza.png" class="side-icon-img" alt="餃子">
+	</div>
+	<div class="side-icons right">
+		<img src="gacha.png" class="side-icon-img" alt="ガチャガチャ">
+		<img src="gyoza.png" class="side-icon-img" alt="餃子">
+		<img src="gacha.png" class="side-icon-img" alt="ガチャガチャ">
+		<img src="gyoza.png" class="side-icon-img" alt="餃子">
+		<img src="gacha.png" class="side-icon-img" alt="ガチャガチャ">
+	</div>
 	<img src="ni1.png" class="silhouette" id="silhouette" alt="シルエット">
 	<img src="ni1.png" class="falling-img" id="fallingImg" alt="落下画像">
 	<script>
