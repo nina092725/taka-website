@@ -96,6 +96,18 @@
 			let top = parseFloat(fallingImg.style.top || '0');
 			top += speed;
 			fallingImg.style.top = top + 'px';
+			const windowHeight = window.innerHeight;
+			const imgHeight = fallingImg.offsetHeight;
+			// 画像が画面下まで到達したら即リセット
+			if (top > windowHeight - imgHeight) {
+				falling = false;
+				fallingImg.style.top = '0px';
+				requestAnimationFrame(() => {
+					falling = true;
+					animate();
+				});
+				return;
+			}
 			if (checkOverlap()) {
 				fallingImg.classList.add('active');
 				// シルエット付近で何も押さなかった場合、3秒後に自動リセット
@@ -109,7 +121,6 @@
 								fallingImg.classList.remove('shake');
 								fallingImg.style.top = '0px';
 								resetTimeout = null;
-								// fallingをtrueにしてからanimate()を呼ぶ
 								falling = true;
 								requestAnimationFrame(animate);
 							}, 500);
