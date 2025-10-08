@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>たかはしの公式ホームページ</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background: linear-gradient(135deg, #fffbe7 0%, #ffe4e1 100%);
+			font-family: 'Rounded Mplus 1c', 'Arial', sans-serif;
+			min-height: 100vh;
+		}
+		.container {
+			max-width: 500px;
+			margin: 60px auto 0 auto;
+			background: #fff;
+			border-radius: 30px;
+			box-shadow: 0 8px 32px rgba(255, 180, 80, 0.18);
+			padding: 40px 30px 30px 30px;
+			text-align: center;
+			position: relative;
+		}
+		h1 {
+			font-size: 2.2em;
+			color: #ff9800;
+			margin-bottom: 20px;
+			letter-spacing: 2px;
+			text-shadow: 1px 2px 0 #fffbe7, 0 4px 8px #ffd70044;
+		}
+		.visitor {
+			font-size: 1.3em;
+			color: #4caf50;
+			margin-bottom: 30px;
+			font-weight: bold;
+			background: #eaffd0;
+			border-radius: 16px;
+			padding: 12px 0;
+			box-shadow: 0 2px 8px #c8e6c9;
+		}
+		.neobatakun {
+			width: 120px;
+			margin-bottom: 18px;
+			filter: drop-shadow(0 4px 12px #ffd70088);
+		}
+		.footer {
+			margin-top: 40px;
+			color: #aaa;
+			font-size: 0.9em;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<img src="履歴書用写真.png" alt="イラスト" class="neobatakun">
+		<h1>たかはしの公式ホームページ</h1>
+		<div class="visitor" id="visitorCount">あなたは〇〇番目の訪問者です。</div>
+		<div class="footer">© 2025 Takahashi</div>
+	</div>
+	<script>
+		// localStorageで訪問回数をカウント
+		let count = localStorage.getItem('visitorCount');
+		if (!count) count = 0;
+		count = parseInt(count) + 1;
+		localStorage.setItem('visitorCount', count);
+		document.getElementById('visitorCount').textContent = `あなたは${count}番目の訪問者です。`;
+	</script>
+</body>
+</html>
