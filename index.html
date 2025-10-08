@@ -1,1 +1,102 @@
-たかはしのWebサイト
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>たかはしのWebサイト</title>
+	<style>
+		body {
+			margin: 0;
+			height: 100vh;
+			background: #f0f0f0;
+			overflow: hidden;
+			position: relative;
+		}
+		.silhouette {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 220px;
+			height: 280px;
+			opacity: 0.3;
+			filter: grayscale(100%) blur(2px);
+			z-index: 1;
+			pointer-events: none;
+		}
+		.falling-img {
+			position: absolute;
+			left: 50%;
+			top: 0;
+			transform: translateX(-50%);
+			width: 220px;
+			height: 280px;
+			z-index: 2;
+			cursor: pointer;
+			transition: box-shadow 0.2s;
+		}
+		.falling-img.active {
+			box-shadow: 0 0 20px 5px #4caf50;
+		}
+	</style>
+</head>
+<body>
+	<img src="履歴書用写真.png" class="silhouette" id="silhouette" alt="シルエット">
+	<img src="履歴書用写真.png" class="falling-img" id="fallingImg" alt="履歴書写真">
+	<script>
+		const fallingImg = document.getElementById('fallingImg');
+		const silhouette = document.getElementById('silhouette');
+		let falling = true;
+		let speed = 3;
+		let animationFrame;
+
+		function getSilhouetteRect() {
+			const rect = silhouette.getBoundingClientRect();
+			return rect;
+		}
+
+		function getFallingRect() {
+			const rect = fallingImg.getBoundingClientRect();
+			return rect;
+		}
+
+		function checkOverlap() {
+			const s = getSilhouetteRect();
+			const f = getFallingRect();
+			// シルエットと画像の中心が近いか判定
+			const dx = Math.abs((s.left + s.width/2) - (f.left + f.width/2));
+			const dy = Math.abs((s.top + s.height/2) - (f.top + f.height/2));
+			return dx < 30 && dy < 30;
+		}
+
+		function animate() {
+			if (!falling) return;
+			let top = parseFloat(fallingImg.style.top || '0');
+			top += speed;
+			fallingImg.style.top = top + 'px';
+			if (checkOverlap()) {
+				fallingImg.classList.add('active');
+			} else {
+				fallingImg.classList.remove('active');
+			}
+			animationFrame = requestAnimationFrame(animate);
+		}
+
+		fallingImg.addEventListener('click', function() {
+			if (checkOverlap()) {
+				falling = false;
+				cancelAnimationFrame(animationFrame);
+				// Home.htmlに遷移
+				window.location.href = 'Home.html';
+			}
+		});
+
+		// 初期位置セット
+		window.onload = function() {
+			fallingImg.style.top = '0px';
+			animate();
+		};
+	</script>
+</body>
+</html>
