@@ -108,9 +108,10 @@
 							setTimeout(() => {
 								fallingImg.classList.remove('shake');
 								fallingImg.style.top = '0px';
-								falling = true;
 								resetTimeout = null;
-								animate();
+								// fallingをtrueにしてからanimate()を呼ぶ
+								falling = true;
+								requestAnimationFrame(animate);
 							}, 500);
 						}
 					}, 3000);
