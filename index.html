@@ -90,6 +90,7 @@
 			return dx < 30 && dy < 30;
 		}
 
+		let resetTimeout = null;
 		function animate() {
 			if (!falling) return;
 			let top = parseFloat(fallingImg.style.top || '0');
@@ -97,8 +98,29 @@
 			fallingImg.style.top = top + 'px';
 			if (checkOverlap()) {
 				fallingImg.classList.add('active');
+				// シルエット付近で何も押さなかった場合、3秒後に自動リセット
+				if (!resetTimeout) {
+					resetTimeout = setTimeout(() => {
+						if (falling) {
+							falling = false;
+							fallingImg.classList.remove('active');
+							fallingImg.classList.add('shake');
+							setTimeout(() => {
+								fallingImg.classList.remove('shake');
+								fallingImg.style.top = '0px';
+								falling = true;
+								resetTimeout = null;
+								animate();
+							}, 500);
+						}
+					}, 3000);
+				}
 			} else {
 				fallingImg.classList.remove('active');
+				if (resetTimeout) {
+					clearTimeout(resetTimeout);
+					resetTimeout = null;
+				}
 			}
 			animationFrame = requestAnimationFrame(animate);
 		}
