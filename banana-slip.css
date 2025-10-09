@@ -3,7 +3,7 @@
    src: url('BananaSlip.ttf') などで指定してください。 */
 @font-face {
   font-family: 'Banana Slip';
-  src: local('Banana Slip');
+  src: url('YDWbananaslipplus.otf') format('opentype');
   font-style: normal;
   font-weight: normal;
 }
