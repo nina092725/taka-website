@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>たかはしの公式ホームページ</title>
+	<title>たかはしラボ</title>
+	<link rel="stylesheet" href="banana-slip.css">
 	<style>
 		body {
 			margin: 0;
@@ -12,52 +13,68 @@
 			background: linear-gradient(135deg, #fffbe7 0%, #ffe4e1 100%);
 			font-family: 'Rounded Mplus 1c', 'Arial', sans-serif;
 			min-height: 100vh;
+			overflow-x: hidden;
 		}
-		.container {
-			max-width: 500px;
-			margin: 60px auto 0 auto;
-			background: #fff;
-			border-radius: 30px;
-			box-shadow: 0 8px 32px rgba(255, 180, 80, 0.18);
-			padding: 40px 30px 30px 30px;
-			text-align: center;
-			position: relative;
+		.header {
+			position: absolute;
+			top: 32px;
+			left: 48px;
+			z-index: 10;
+			font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
+			font-size: 2.6em;
+			color: #ffb300;
+			letter-spacing: 0.08em;
+			text-shadow: 2px 2px 0 #fffbe7, 0 4px 12px #ffd70044;
+			background: rgba(255,255,255,0.7);
+			border-radius: 18px;
+			padding: 12px 32px 12px 24px;
+			box-shadow: 0 4px 16px #ffd70022;
 		}
-		h1 {
-			font-size: 2.2em;
-			color: #ff9800;
-			margin-bottom: 20px;
-			letter-spacing: 2px;
-			text-shadow: 1px 2px 0 #fffbe7, 0 4px 8px #ffd70044;
+		.main {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+			min-height: 100vh;
 		}
-		.visitor {
-			font-size: 1.3em;
-			color: #4caf50;
-			margin-bottom: 30px;
-			font-weight: bold;
-			background: #eaffd0;
-			border-radius: 16px;
-			padding: 12px 0;
-			box-shadow: 0 2px 8px #c8e6c9;
+		.left {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: flex-start;
+			padding-left: 80px;
 		}
-		.neobatakun {
-			width: 120px;
-			margin-bottom: 18px;
-			filter: drop-shadow(0 4px 12px #ffd70088);
+		.right {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			padding-right: 60px;
 		}
-		.footer {
-			margin-top: 40px;
-			color: #aaa;
+		.ni-img {
+			width: 60%;
+			max-width: 420px;
+			min-width: 220px;
+			border-radius: 32px;
+			box-shadow: 0 8px 32px #ffd70044;
+			background: #fffbe7;
+		}
+	</style>
 			font-size: 0.9em;
 		}
 	</style>
-</head>
-<body>
-	<div class="container">
-		<img src="ni1.png" alt="イラスト" class="neobatakun">
-		<h1>たかはしの公式ホームページ</h1>
-		<div class="visitor" id="visitorCount">あなたは〇〇番目の訪問者です。</div>
-		<div class="footer">© 2025 Takahashi</div>
+		<div class="header">たかはしラボ</div>
+		<div class="main">
+			<div class="left">
+				<div style="font-size:1.3em;color:#4caf50;background:#eaffd0;border-radius:16px;padding:12px 24px;box-shadow:0 2px 8px #c8e6c9;margin-bottom:24px;">ようこそ！</div>
+				<!-- ここに他のコンテンツを追加できます -->
+			</div>
+			<div class="right">
+				<img src="ni1.png" alt="に1" class="ni-img">
+			</div>
+		</div>
+		<div class="footer" style="text-align:center;margin-top:40px;color:#aaa;">© 2025 たかはしラボ</div>
 	</div>
 	<script>
 		// localStorageで訪問回数をカウント
