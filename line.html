@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hoihoi作品一覧</title>
+    <title>好きなエンタメ</title>
     <link rel="stylesheet" href="banana-slip.css">
     <style>
         body {
@@ -37,7 +37,7 @@
             justify-content: flex-start;
             min-height: 100vh;
         }
-        .works {
+        .entame {
             margin-top: 32vh;
             width: 80vw;
             max-width: 800px;
@@ -46,28 +46,34 @@
             box-shadow: 0 4px 16px #66003322;
             padding: 32px;
         }
-        .works-title {
+        .entame-title {
             font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
             font-size: 2em;
             color: #660033;
             margin-bottom: 24px;
             text-align: center;
         }
-        .work-item {
-            font-size: 1.2em;
+        .entame-list {
+            font-size: 1.1em;
             color: #333;
-            margin-bottom: 18px;
+            line-height: 2;
+        }
+        .entame-list a {
+            color: #660033;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="header">hoihoi作品一覧</div>
+    <div class="header">好きなエンタメ</div>
     <div class="main">
-        <div class="works">
-            <div class="works-title">裁縫作品ギャラリー</div>
-            <!-- ここに作品を追加してください -->
-            <div class="work-item">（例）手作りポーチ</div>
-            <div class="work-item">（例）刺繍入りハンカチ</div>
+        <div class="entame">
+            <div class="entame-title">おすすめエンタメ</div>
+            <ul class="entame-list">
+                <li><a href="https://www.tbsradio.jp/" target="_blank">TBSラジオ</a></li>
+                <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
+                <li><a href="https://www.netflix.com/jp/" target="_blank">Netflixドラマ</a></li>
+            </ul>
         </div>
     </div>
 </body>
