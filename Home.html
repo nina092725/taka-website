@@ -76,9 +76,23 @@
 				<a href="hoihoi_lab.html" style="text-decoration:none;width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;margin:32px auto 0 auto;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;">
 					<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">hiwahiwa作品一覧</span>
 				</a>
-				<button style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;margin:24px auto 0 auto;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;">
+				<button id="entameBtn" style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;margin:24px auto 0 auto;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;">
 					<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">好きなエンタメ</span>
 				</button>
+				<div id="entameContent" style="width:340px;background:#fffbe7;border-radius:18px;border:2px solid #660033;box-shadow:0 2px 8px #66003322;margin:16px auto 0 auto;padding:18px 24px;display:none;">
+					<div style="font-family:'Banana Slip';font-size:1.3em;color:#660033;margin-bottom:12px;">おすすめエンタメ</div>
+					<ul style="font-size:1.1em;color:#333;line-height:2;">
+						<li><a href="https://www.tbsradio.jp/" target="_blank" style="color:#660033;">TBSラジオ</a></li>
+						<li><a href="https://www.youtube.com/" target="_blank" style="color:#660033;">YouTube</a></li>
+						<li><a href="https://www.netflix.com/jp/" target="_blank" style="color:#660033;">Netflixドラマ</a></li>
+					</ul>
+				</div>
+				<script>
+				document.getElementById('entameBtn').onclick = function() {
+					var content = document.getElementById('entameContent');
+					content.style.display = (content.style.display === 'none' || content.style.display === '') ? 'block' : 'none';
+				};
+				</script>
 			</div>
 		</div>
 		<div class="footer" style="text-align:center;margin-top:40px;color:#aaa;">© 2025 たかはしラボ</div>
