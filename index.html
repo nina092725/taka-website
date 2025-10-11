@@ -80,6 +80,30 @@
 			object-fit: contain;
 			opacity: 0.98;
 		}
+		@media (max-width: 600px) {
+			.silhouette,
+			.falling-img {
+				max-width: 40vw;
+				max-height: 18vh;
+			}
+			.side-icons {
+				width: 32px;
+			}
+			.side-icons.left {
+				left: 6px;
+			}
+			.side-icons.right {
+				right: 6px;
+			}
+			.side-icon-img {
+				width: 44px;
+				height: 44px;
+				margin: 0.5px 0;
+			}
+			.side-line {
+				width: 4px;
+			}
+		}
 		.falling-img.active {
 			box-shadow: 0 0 20px 5px #4caf50;
 		}
