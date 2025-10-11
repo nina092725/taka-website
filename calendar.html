@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="banana-slip.css">
     <style>
         body { background: #abced8; font-family: 'Rounded Mplus 1c', 'Arial', sans-serif; margin:0; min-height:100vh; }
-    .header { font-family:'Banana Slip'; font-size:4em; color:#660033; text-align:center; margin-top:7vh; justify-content:center; align-items:center; display:flex; }
+    .header { font-family:'Banana Slip'; font-size:4em; color:#660033; text-align:center; margin-top:5vh; justify-content:center; align-items:center; display:block; line-height:1.05; }
+    .lab-title { display:inline-block; }
         .calendar-table { width:90vw; max-width:900px; margin:40px auto; background:#fffbe7; border-radius:18px; box-shadow:0 4px 16px #66003322; padding:32px; }
         .calendar-title { font-family:'Banana Slip'; font-size:2em; color:#660033; margin-bottom:24px; text-align:center; }
         .calendar-list { display:flex; flex-wrap:wrap; gap:32px; justify-content:center; }
@@ -15,7 +16,8 @@
         .calendar-item img { width:100%; border-radius:8px; }
         .calendar-item .caption { margin-top:8px; color:#660033; font-size:1.1em; font-family:'Banana Slip'; }
         @media (max-width: 600px) {
-            .header { font-size: 2.3em; margin-top: 4vh; justify-content:center; align-items:center; display:flex; white-space: nowrap; }
+            .header { font-size: 3.2em; margin-top: 2vh; display:block; line-height:1.05; }
+            .lab-title { display:inline-block; }
             body, .calendar-title, .calendar-list, .calendar-item .caption { text-align: center !important; }
             .calendar-table { width:98vw; padding:12px; }
             .calendar-title { font-size: 1.2em; margin-bottom: 12px; }
@@ -32,7 +34,7 @@
     </style>
 </head>
 <body>
-    <div class="header">カレンダー</div>
+    <div class="header"><span class="lab-title">たかはし</span><br><span class="lab-title">ラボ</span></div>
     <div class="calendar-table">
         <div class="calendar-title">画像ギャラリー</div>
         <div class="calendar-list">
@@ -51,6 +53,14 @@
             <div class="calendar-item">
                 <img src="4.png" alt="画像4">
                 <div class="caption">画像4</div>
+            </div>
+            <div class="calendar-item">
+                <img src="5.png" alt="画像5">
+                <div class="caption">画像5</div>
+            </div>
+            <div class="calendar-item">
+                <img src="6.png" alt="画像6">
+                <div class="caption">画像6</div>
             </div>
         </div>
     </div>
