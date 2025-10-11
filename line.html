@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>好きなエンタメ</title>
+    <link rel="stylesheet" href="banana-slip.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #abced8;
+            font-family: 'Rounded Mplus 1c', 'Arial', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .header {
+            position: absolute;
+            left: 50%;
+            top: 15vh;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
+            font-size: 3.5em;
+            color: #660033;
+            letter-spacing: 0.08em;
+            text-shadow: 2px 2px 0 #fffbe7, 0 4px 12px #ffd70044;
+            background: none;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+        .entame {
+            margin-top: 32vh;
+            width: 80vw;
+            max-width: 800px;
+            background: #fffbe7;
+            border-radius: 18px;
+            box-shadow: 0 4px 16px #66003322;
+            padding: 32px;
+        }
+        .entame-title {
+            font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
+            font-size: 2em;
+            color: #660033;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .entame-list {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 2;
+        }
+        .entame-list a {
+            color: #660033;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">好きなエンタメ</div>
+    <div class="main">
+        <div class="entame">
+            <div class="entame-title">おすすめエンタメ</div>
+            <ul class="entame-list">
+                <li><a href="https://www.tbsradio.jp/" target="_blank">TBSラジオ</a></li>
+                <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
+                <li><a href="https://www.netflix.com/jp/" target="_blank">Netflixドラマ</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

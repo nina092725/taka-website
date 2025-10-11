@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お出かけライブラリ</title>
+    <link rel="stylesheet" href="banana-slip.css">
+    <style>
+        body { background: #abced8; font-family: 'Rounded Mplus 1c', 'Arial', sans-serif; margin:0; min-height:100vh; }
+        .header { font-family:'Banana Slip'; font-size:3em; color:#660033; text-align:center; margin-top:7vh; }
+        .library-table { width:90vw; max-width:800px; margin:40px auto; background:#fffbe7; border-radius:18px; box-shadow:0 4px 16px #66003322; padding:32px; }
+        .library-title { font-family:'Banana Slip'; font-size:2em; color:#660033; margin-bottom:24px; text-align:center; }
+        .library-list { display:flex; flex-wrap:wrap; gap:24px; justify-content:center; }
+        .library-item { width:180px; background:#fff; border-radius:12px; box-shadow:0 2px 8px #66003322; text-align:center; padding:16px; }
+        .library-item img { width:100%; border-radius:8px; }
+        .library-item .caption { margin-top:8px; color:#660033; font-size:1.1em; font-family:'Banana Slip'; }
+        .map-section { margin-top:32px; text-align:center; }
+        .map-title { font-family:'Banana Slip'; font-size:1.3em; color:#660033; margin-bottom:12px; }
+        .map-img { width:80%; max-width:500px; border-radius:12px; box-shadow:0 2px 8px #66003322; }
+    </style>
+</head>
+<body>
+    <div class="header">お出かけライブラリ</div>
+    <div class="library-table">
+        <div class="library-title">お出かけ写真</div>
+        <div class="library-list">
+            <div class="library-item">
+                <img src="gacha1.png" alt="お出かけ1">
+                <div class="caption">ガチャスポット</div>
+            </div>
+            <!-- ここに写真を追加できます -->
+        </div>
+        <div class="map-section">
+            <div class="map-title">行った場所マップ</div>
+            <img src="ni1.png" alt="地図サンプル" class="map-img">
+            <!-- 実際の地図や色付けは今後追加可能です -->
+        </div>
+    </div>
+</body>
+</html>

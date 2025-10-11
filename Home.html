@@ -4,60 +4,101 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>たかはしの公式ホームページ</title>
+	<title>たかはしラボ</title>
+	<link rel="stylesheet" href="banana-slip.css">
 	<style>
 		body {
 			margin: 0;
 			padding: 0;
-			background: linear-gradient(135deg, #fffbe7 0%, #ffe4e1 100%);
+			background: #abced8;
 			font-family: 'Rounded Mplus 1c', 'Arial', sans-serif;
 			min-height: 100vh;
+			overflow-x: hidden;
 		}
-		.container {
-			max-width: 500px;
-			margin: 60px auto 0 auto;
-			background: #fff;
-			border-radius: 30px;
-			box-shadow: 0 8px 32px rgba(255, 180, 80, 0.18);
-			padding: 40px 30px 30px 30px;
-			text-align: center;
-			position: relative;
+		.header {
+			position: absolute;
+			left: 50%;
+			top: 15vh;
+			transform: translateX(-50%);
+			z-index: 10;
+			font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
+			font-size: 5.2em;
+			color: #660033;
+			letter-spacing: 0.08em;
+			text-shadow: 2px 2px 0 #fffbe7, 0 4px 12px #ffd70044;
+			background: none;
+			border-radius: 0;
+			padding: 0;
+			box-shadow: none;
 		}
-		h1 {
-			font-size: 2.2em;
-			color: #ff9800;
-			margin-bottom: 20px;
-			letter-spacing: 2px;
-			text-shadow: 1px 2px 0 #fffbe7, 0 4px 8px #ffd70044;
+		.main {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			min-height: 100vh;
 		}
-		.visitor {
-			font-size: 1.3em;
-			color: #4caf50;
-			margin-bottom: 30px;
-			font-weight: bold;
-			background: #eaffd0;
-			border-radius: 16px;
-			padding: 12px 0;
-			box-shadow: 0 2px 8px #c8e6c9;
+		.left {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: flex-start;
+			padding-left: 80px;
 		}
-		.neobatakun {
-			width: 120px;
-			margin-bottom: 18px;
-			filter: drop-shadow(0 4px 12px #ffd70088);
+		.right {
+			flex: none;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			padding-right: 0;
 		}
-		.footer {
-			margin-top: 40px;
-			color: #aaa;
-			font-size: 0.9em;
+		.ni-img {
+			width: 120%;
+			max-width: 840px;
+			min-width: 440px;
+			border-radius: 0;
+			box-shadow: none;
+			background: none;
 		}
 	</style>
-</head>
-<body>
-	<div class="container">
-		<img src="ni1.png" alt="イラスト" class="neobatakun">
-		<h1>たかはしの公式ホームページ</h1>
-		<div class="visitor" id="visitorCount">あなたは〇〇番目の訪問者です。</div>
-		<div class="footer">© 2025 Takahashi</div>
+			
+		
+	</style>
+		<div class="header">たかはしラボ</div>
+		<div class="main">
+			<div class="right" style="position:relative;">
+				<div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+					<img src="ni1.png" alt="に1" class="ni-img" style="display:block;margin:520px auto 0 auto;width:520px;max-width:520px;min-width:280px;">
+				</div>
+			</div>
+		</div>
+	<div class="button-group" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:120px;">
+		<!-- ...existing code... -->
+			<a href="hoihoi_lab.html" style="text-decoration:none;width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;">
+				<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">hoihoi作品一覧</span>
+			</a>
+			<a href="line.html" style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;text-decoration:none;">
+				<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">好きなエンタメ</span>
+			</a>
+			<a href="gohan.html" style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;text-decoration:none;">
+				<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">ごはん記録</span>
+			</a>
+			<a href="coffee.html" style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;text-decoration:none;">
+				<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">コーヒー記録</span>
+			</a>
+			<a href="library.html" style="width:340px;height:70px;border:3px solid #660033;border-radius:18px;background:#fffbe7;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow 0.2s;box-shadow:0 2px 8px #66003322;text-decoration:none;">
+				<span style="font-family:'Banana Slip';font-size:2em;color:#660033;">お出かけライブラリ</span>
+			</a>
+			<div style="width:100%;display:flex;justify-content:center;align-items:center;margin:40px 0 0 0;">
+				<a href="calendar.html">
+					<img src="4.png" alt="カレンダー" style="width:220px;max-width:90vw;cursor:pointer;border-radius:18px;box-shadow:0 2px 8px #66003322;">
+				</a>
+			</div>
+		</div>
+		</div>
+		<div class="footer" style="text-align:center;margin-top:40px;color:#aaa;">© 2025 たかはしラボ</div>
 	</div>
 	<script>
 		// localStorageで訪問回数をカウント

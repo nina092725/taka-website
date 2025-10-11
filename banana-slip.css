@@ -1,0 +1,9 @@
+/* Banana Slip フォントのWebフォントCSS（Google Fonts等で未提供のため、ダミー指定）
+   実際に表示するにはBanana Slipフォントファイルをアップロードし、
+   src: url('BananaSlip.ttf') などで指定してください。 */
+@font-face {
+  font-family: 'Banana Slip';
+  src: url('YDWbananaslipplus.otf') format('opentype');
+  font-style: normal;
+  font-weight: normal;
+}
