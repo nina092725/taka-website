@@ -14,6 +14,20 @@
         .menu-item { width:180px; background:#fff; border-radius:12px; box-shadow:0 2px 8px #66003322; text-align:center; padding:16px; }
         .menu-item img { width:100%; border-radius:8px; }
         .menu-item .caption { margin-top:8px; color:#660033; font-size:1.1em; font-family:'Banana Slip'; }
+        @media (max-width: 600px) {
+            .header { font-size: 2em; margin-top: 4vh; }
+            .menu-table { width:98vw; padding:12px; }
+            .menu-title { font-size: 1.2em; margin-bottom: 12px; }
+            .menu-list { gap: 12px; }
+            .menu-item { width: 44vw; padding: 8px; }
+            .menu-item img { width: 100%; }
+            .menu-item .caption { font-size: 0.95em; }
+        }
+        @media (max-width: 400px) {
+            .header { font-size: 1.3em; }
+            .menu-table { padding: 4px; }
+            .menu-item { width: 90vw; }
+        }
     </style>
 </head>
 <body>

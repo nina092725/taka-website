@@ -17,6 +17,22 @@
         .map-section { margin-top:32px; text-align:center; }
         .map-title { font-family:'Banana Slip'; font-size:1.3em; color:#660033; margin-bottom:12px; }
         .map-img { width:80%; max-width:500px; border-radius:12px; box-shadow:0 2px 8px #66003322; }
+        @media (max-width: 600px) {
+            .header { font-size: 2em; margin-top: 4vh; }
+            .library-table { width:98vw; padding:12px; }
+            .library-title { font-size: 1.2em; margin-bottom: 12px; }
+            .library-list { gap: 12px; }
+            .library-item { width: 44vw; padding: 8px; }
+            .library-item img { width: 100%; }
+            .library-item .caption { font-size: 0.95em; }
+            .map-img { width: 98vw; max-width: 98vw; }
+        }
+        @media (max-width: 400px) {
+            .header { font-size: 1.3em; }
+            .library-table { padding: 4px; }
+            .library-item { width: 90vw; }
+            .map-img { width: 98vw; }
+        }
     </style>
 </head>
 <body>
