@@ -35,6 +35,13 @@
 			align-items: center;
 			display: flex;
 		}
+		.lab-title { display: inline-block; }
+		/* iPhone 14 Pro などの狭い画面で確実に2行にする */
+		@media (max-width: 420px) {
+			.header { display: block !important; font-size: 3.4em !important; top: 6vh !important; line-height: 1.02 !important; }
+			.lab-title { display: block; }
+			.main { padding-top: 2vh; }
+		}
 		@media (max-width: 600px) {
 			.header { font-size: 4em; top: 7vh; justify-content:center; align-items:center; display:flex; }
 			.main { padding: 0 2vw; text-align: center; }
