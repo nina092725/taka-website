@@ -94,6 +94,104 @@
                 <div id="playlistList" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;"></div>
                 <div id="playlistControls" style="margin-top:12px;text-align:center;"></div>
             </div>
+            <!-- Google スプレッドシートから読み込むお気に入りリスト -->
+            <div style="margin-top:28px; max-width:900px; margin-left:auto; margin-right:auto;">
+                <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">たかはしのおすすめ（スプレッドシート連動）</h3>
+                <div id="sheetList" style="background:#fffbe7;border-radius:12px;padding:16px;box-shadow:0 4px 12px #66003322;">
+                    <div id="sheetLoading" style="text-align:center;color:#666;">読み込み中…</div>
+                    <ul id="sheetItems" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:10px;"></ul>
+                </div>
+            </div>
+
+            <script>
+                // Google スプレッドシートから一覧を取得して表示する (公開シート向け)
+                const sheetId = '17DDnw6-GUBoSaaE9DOB8qWZcNkRuhfYN_L1m9cksUao';
+                const sheetName = '';
+                function fetchSheet() {
+                    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json${sheetName?('&sheet='+encodeURIComponent(sheetName)):''}`;
+                    fetch(url).then(r => r.text()).then(text => {
+                        // Google のレスポンスは JSONP ライクなので先頭を取り除く
+                        const jsonText = text.replace(/^\s*\/\*.*?\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);\s*$/, '');
+                        const data = JSON.parse(jsonText);
+                        renderSheetData(data);
+                    }).catch(err => {
+                        console.error('sheet fetch error', err);
+                        document.getElementById('sheetLoading').textContent = 'スプレッドシートの読み込みに失敗しました。シートが公開されているか確認してください。';
+                    });
+                }
+
+                function renderSheetData(data) {
+                    const loading = document.getElementById('sheetLoading');
+                    const list = document.getElementById('sheetItems');
+                    try {
+                        const table = data.table;
+                        const cols = table.cols.map(c => c.label || c.id);
+                        // 期待するカラム例: タイトル, 種類, リンク, メモ
+                        const rows = table.rows || [];
+                        loading.style.display = 'none';
+                        list.innerHTML = '';
+                        rows.forEach(r => {
+                            const cells = r.c.map(c => c ? c.v : '');
+                            // 1列目: タイトル, 2列目: 種類, 3列目: リンク
+                            const title = cells[0] || '(タイトルなし)';
+                            const type = cells[1] || '';
+                            const link = cells[2] || '';
+                            const note = cells[3] || '';
+
+                            const li = document.createElement('li');
+                            li.style.display = 'flex';
+                            li.style.flexDirection = 'row';
+                            li.style.alignItems = 'center';
+                            li.style.gap = '12px';
+
+                            const left = document.createElement('div');
+                            left.style.flex = '0 0 10px';
+                            left.style.width = '10px';
+                            left.style.height = '10px';
+                            left.style.borderRadius = '50%';
+                            left.style.background = type === '映画' ? '#ff9800' : (type === 'ドラマ' ? '#4caf50' : '#2196f3');
+
+                            const content = document.createElement('div');
+                            content.style.flex = '1';
+                            const titleEl = document.createElement('div');
+                            titleEl.textContent = title + (type ? ` — ${type}` : '');
+                            titleEl.style.fontWeight = '700';
+                            titleEl.style.color = '#333';
+
+                            if (link) {
+                                const a = document.createElement('a');
+                                a.href = link;
+                                a.target = '_blank';
+                                a.rel = 'noopener noreferrer';
+                                a.style.color = '#660033';
+                                a.style.textDecoration = 'underline';
+                                a.textContent = '視聴/詳細';
+                                titleEl.appendChild(document.createTextNode(' '));
+                                titleEl.appendChild(a);
+                            }
+                            const noteEl = document.createElement('div');
+                            noteEl.textContent = note;
+                            noteEl.style.fontSize = '0.95em';
+                            noteEl.style.color = '#666';
+
+                            content.appendChild(titleEl);
+                            if (note) content.appendChild(noteEl);
+
+                            li.appendChild(left);
+                            li.appendChild(content);
+                            list.appendChild(li);
+                        });
+                    } catch (e) {
+                        loading.textContent = 'スプレッドシートの形式を解析できませんでした。';
+                        console.error(e);
+                    }
+                }
+
+                // 実行
+                fetchSheet();
+                // 定期的に更新（例: 3分ごとに再取得）
+                setInterval(fetchSheet, 1000 * 60 * 3);
+            </script>
             <script>
                 const playlistId = 'PL_0HRbJsBYMbgkg4WlKMG0kvKIdbJQZYL';
                 // 1) YouTube IFrame APIを読み込む
