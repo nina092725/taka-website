@@ -1,109 +1,147 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>好きなエンタメ</title>
-    <link rel="stylesheet" href="banana-slip.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #abced8;
-            font-family: 'Rounded Mplus 1c', 'Arial', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .header {
-            position: absolute;
-            left: 50%;
-            top: 15vh;
-            transform: translateX(-50%);
-            z-index: 10;
-            font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
-            font-size: 4.5em;
-            color: #660033;
-            letter-spacing: 0.08em;
-            text-shadow: 2px 2px 0 #fffbe7, 0 4px 12px #ffd70044;
-            background: none;
-            border-radius: 0;
-            padding: 0;
-            box-shadow: none;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-        }
-        @media (max-width: 600px) {
-            .header { font-size: 3em; top: 7vh; justify-content:center; align-items:center; display:flex; }
-            .main { padding: 0 2vw; text-align: center; }
-            body { text-align: center !important; }
-        }
-        @media (max-width: 400px) {
-            .header { font-size: 1em; top: 4vh; }
-            .main { padding: 0 1vw; }
-        }
-        .main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-        }
-        .entame {
-            margin-top: 32vh;
-            width: 80vw;
-            max-width: 800px;
-            background: #fffbe7;
-            border-radius: 18px;
-            box-shadow: 0 4px 16px #66003322;
-            padding: 32px;
-        }
-        .entame-title {
-            font-family: 'Banana Slip', 'Rounded Mplus 1c', 'Arial', sans-serif;
-            font-size: 2em;
-            color: #660033;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-        .entame-list {
-            font-size: 1.1em;
-            color: #333;
-            line-height: 2;
-        }
-        .entame-list a {
-            color: #660033;
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">好きなエンタメ</div>
-    <div class="main">
-        <div class="entame">
-            <div class="entame-title">おすすめエンタメ</div>
-            <ul class="entame-list">
-                <li><a href="https://www.tbsradio.jp/" target="_blank">TBSラジオ</a></li>
-                <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
-                <li><a href="https://www.netflix.com/jp/" target="_blank">Netflixドラマ</a></li>
-            </ul>
-            <div style="margin-top:32px;text-align:center;">
-                <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center; margin-bottom:12px;">Youtube</h3>
-                <!-- プレイヤー（IFrame APIで制御） -->
-                <div id="player" style="width:100%;max-width:900px;margin:0 auto;"></div>
-                <!-- プレイリストのサムネ一覧 -->
-                <div id="playlistList" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;"></div>
-                <div id="playlistControls" style="margin-top:12px;text-align:center;"></div>
-            </div>
             <!-- Google スプレッドシートから読み込むお気に入りリスト -->
             <div style="margin-top:28px; max-width:900px; margin-left:auto; margin-right:auto;">
                 <div id="sheetContainer">
                     <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">ラジオ</h3>
                     <div id="sheetRadio" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;margin-bottom:14px;">
-                        <div id="sheetLoading" style="text-align:center;color:#666;">読み込み中…</div>
+                        <div id="sheetLoadingRadio" style="text-align:center;color:#666;">読み込み中…</div>
                         <ul id="sheetRadioList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
                     </div>
                     <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">映画・ドラマ</h3>
+                    <div id="sheetWorks" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;">
+                        <div id="sheetLoadingWorks" style="text-align:center;color:#666;display:none;">読み込み中…</div>
+                        <ul id="sheetWorksList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Google スプレッドシートからシート名ごとに取得して表示する
+                const sheetId = '17DDnw6-GUBoSaaE9DOB8qWZcNkRuhfYN_L1m9cksUao';
+
+                function fetchSheetByName(name, onSuccess, onError) {
+                    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(name)}`;
+                    fetch(url).then(r => r.text()).then(text => {
+                        const jsonText = text.replace(/^\s*\/\*.*?\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);\s*$/, '');
+                        const data = JSON.parse(jsonText);
+                        onSuccess && onSuccess(data);
+                    }).catch(err => {
+                        console.error('sheet fetch error', err);
+                        onError && onError(err);
+                    });
+                }
+
+                // ラジオシートの描画（曜日順でソート）
+                function renderRadioData(data) {
+                    const loading = document.getElementById('sheetLoadingRadio');
+                    const list = document.getElementById('sheetRadioList');
+                    try {
+                        const rows = (data.table && data.table.rows) || [];
+                        loading.style.display = 'none';
+                        list.innerHTML = '';
+                        const items = rows.map(r => r.c.map(c => c ? c.v : ''));
+                        // 想定: [タイトル, 曜日, ...]
+                        const weekdayOrder = ['月曜日','火曜日','水曜日','木曜日','金曜日','土曜日','日曜日'];
+                        function weekdayIndex(dayStr) {
+                            if (!dayStr) return 999;
+                            for (let i=0;i<weekdayOrder.length;i++){
+                                if (dayStr.indexOf(weekdayOrder[i]) !== -1) return i;
+                            }
+                            // 文字が '土' のような短縮形
+                            const shortMap = {'月':0,'火':1,'水':2,'木':3,'金':4,'土':5,'日':6};
+                            for (const k in shortMap) if (dayStr.indexOf(k) !== -1) return shortMap[k];
+                            return 999;
+                        }
+                        items.sort((a,b) => weekdayIndex(a[1]) - weekdayIndex(b[1]));
+                        items.forEach(cells => {
+                            const title = cells[0] || '(タイトルなし)';
+                            const day = cells[1] || '';
+                            const li = document.createElement('li');
+                            li.textContent = `${title}\t${day}`;
+                            li.style.padding = '4px 0';
+                            list.appendChild(li);
+                        });
+                    } catch(e) {
+                        loading.textContent = 'ラジオ一覧の読み込みに失敗しました。';
+                        console.error(e);
+                    }
+                }
+
+                // 作品シートの描画（ジャンル別にグループ）
+                function renderWorksData(data) {
+                    const loading = document.getElementById('sheetLoadingWorks');
+                    const list = document.getElementById('sheetWorksList');
+                    try {
+                        const rows = (data.table && data.table.rows) || [];
+                        loading.style.display = 'none';
+                        list.innerHTML = '';
+                        const items = rows.map(r => r.c.map(c => c ? c.v : ''));
+                        const groups = {};
+                        items.forEach(cells => {
+                            const title = cells[0] || '(タイトルなし)';
+                            const genre = (cells[1] || 'その他').toString();
+                            if (!groups[genre]) groups[genre] = [];
+                            groups[genre].push(title);
+                        });
+                        // 出力順: 映画, ドラマ, アニメ, その他
+                        const order = ['映画','ドラマ','アニメ'];
+                        order.forEach(g => {
+                            if (groups[g]) {
+                                const h = document.createElement('div');
+                                h.style.fontWeight = '700';
+                                h.style.marginTop = '6px';
+                                h.textContent = g;
+                                list.appendChild(h);
+                                groups[g].forEach(t => {
+                                    const li = document.createElement('li');
+                                    li.textContent = t;
+                                    li.style.padding = '4px 0 4px 8px';
+                                    list.appendChild(li);
+                                });
+                                delete groups[g];
+                            }
+                        });
+                        // その他残り
+                        Object.keys(groups).forEach(g => {
+                            const h = document.createElement('div');
+                            h.style.fontWeight = '700';
+                            h.style.marginTop = '6px';
+                            h.textContent = g;
+                            list.appendChild(h);
+                            groups[g].forEach(t => {
+                                const li = document.createElement('li');
+                                li.textContent = t;
+                                li.style.padding = '4px 0 4px 8px';
+                                list.appendChild(li);
+                            });
+                        });
+                    } catch(e) {
+                        loading.style.display = 'block';
+                        loading.textContent = '作品一覧の読み込みに失敗しました。';
+                        console.error(e);
+                    }
+                }
+
+                // 両方のシートを取得して描画
+                function refreshSheets() {
+                    // ラジオシート
+                    document.getElementById('sheetLoadingRadio').style.display = 'block';
+                    fetchSheetByName('ラジオ', renderRadioData, (e)=>{
+                        document.getElementById('sheetLoadingRadio').textContent = 'ラジオの読み込みに失敗しました。';
+                    });
+                    // 作品シート
+                    document.getElementById('sheetLoadingWorks').style.display = 'block';
+                    document.getElementById('sheetLoadingWorks').textContent = '読み込み中…';
+                    fetchSheetByName('映画ドラマ', renderWorksData, (e)=>{
+                        document.getElementById('sheetLoadingWorks').textContent = '作品の読み込みに失敗しました。';
+                    });
+                }
+
+                // 初回取得と定期更新
+                refreshSheets();
+                setInterval(refreshSheets, 1000 * 60 * 3);
+            </script>
                     <div id="sheetWorks" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;">
                         <ul id="sheetWorksList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
                     </div>
