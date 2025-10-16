@@ -88,6 +88,7 @@
                 <li><a href="https://www.netflix.com/jp/" target="_blank">Netflixドラマ</a></li>
             </ul>
             <div style="margin-top:32px;text-align:center;">
+                <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center; margin-bottom:12px;">Youtube</h3>
                 <!-- プレイヤー（IFrame APIで制御） -->
                 <div id="player" style="width:100%;max-width:900px;margin:0 auto;"></div>
                 <!-- プレイリストのサムネ一覧 -->
@@ -96,10 +97,16 @@
             </div>
             <!-- Google スプレッドシートから読み込むお気に入りリスト -->
             <div style="margin-top:28px; max-width:900px; margin-left:auto; margin-right:auto;">
-                <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">たかはしのおすすめ（スプレッドシート連動）</h3>
-                <div id="sheetList" style="background:#fffbe7;border-radius:12px;padding:16px;box-shadow:0 4px 12px #66003322;">
-                    <div id="sheetLoading" style="text-align:center;color:#666;">読み込み中…</div>
-                    <ul id="sheetItems" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:10px;"></ul>
+                <div id="sheetContainer">
+                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">ラジオ</h3>
+                    <div id="sheetRadio" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;margin-bottom:14px;">
+                        <div id="sheetLoading" style="text-align:center;color:#666;">読み込み中…</div>
+                        <ul id="sheetRadioList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
+                    </div>
+                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">映画・ドラマ</h3>
+                    <div id="sheetWorks" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;">
+                        <ul id="sheetWorksList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
+                    </div>
                 </div>
             </div>
 
@@ -132,54 +139,33 @@
                         list.innerHTML = '';
                         rows.forEach(r => {
                             const cells = r.c.map(c => c ? c.v : '');
-                            // 1列目: タイトル, 2列目: 種類, 3列目: リンク
-                            const title = cells[0] || '(タイトルなし)';
-                            const type = cells[1] || '';
-                            const link = cells[2] || '';
-                            const note = cells[3] || '';
+                            // 1列目: タイトル, 2列目: 種類/日付, 3列目: リンク, 4列目: メモ
+                                const title = cells[0] || '(タイトルなし)';
+                                const second = cells[1] || ''; // 種類や曜日など
+                                const link = cells[2] || '';
+                                const note = cells[3] || '';
 
-                            const li = document.createElement('li');
-                            li.style.display = 'flex';
-                            li.style.flexDirection = 'row';
-                            li.style.alignItems = 'center';
-                            li.style.gap = '12px';
+                                // 判定: second が「○曜日」ならラジオテーブル扱い、それ以外で『映画/ドラマ/アニメ』が含まれるなら作品テーブル扱い
+                                const isRadio = /[月火水木金土日]曜日/.test(second) || /曜日/.test(String(second));
+                                const isWork = /(映画|ドラマ|アニメ)/.test(second);
 
-                            const left = document.createElement('div');
-                            left.style.flex = '0 0 10px';
-                            left.style.width = '10px';
-                            left.style.height = '10px';
-                            left.style.borderRadius = '50%';
-                            left.style.background = type === '映画' ? '#ff9800' : (type === 'ドラマ' ? '#4caf50' : '#2196f3');
-
-                            const content = document.createElement('div');
-                            content.style.flex = '1';
-                            const titleEl = document.createElement('div');
-                            titleEl.textContent = title + (type ? ` — ${type}` : '');
-                            titleEl.style.fontWeight = '700';
-                            titleEl.style.color = '#333';
-
-                            if (link) {
-                                const a = document.createElement('a');
-                                a.href = link;
-                                a.target = '_blank';
-                                a.rel = 'noopener noreferrer';
-                                a.style.color = '#660033';
-                                a.style.textDecoration = 'underline';
-                                a.textContent = '視聴/詳細';
-                                titleEl.appendChild(document.createTextNode(' '));
-                                titleEl.appendChild(a);
-                            }
-                            const noteEl = document.createElement('div');
-                            noteEl.textContent = note;
-                            noteEl.style.fontSize = '0.95em';
-                            noteEl.style.color = '#666';
-
-                            content.appendChild(titleEl);
-                            if (note) content.appendChild(noteEl);
-
-                            li.appendChild(left);
-                            li.appendChild(content);
-                            list.appendChild(li);
+                                if (isRadio) {
+                                    const li = document.createElement('li');
+                                    li.textContent = `${title}\t${second}`;
+                                    li.style.padding = '4px 0';
+                                    document.getElementById('sheetRadioList').appendChild(li);
+                                } else if (isWork) {
+                                    const li = document.createElement('li');
+                                    li.textContent = `${title}\t${second}`;
+                                    li.style.padding = '4px 0';
+                                    document.getElementById('sheetWorksList').appendChild(li);
+                                } else {
+                                    // 不明な行は作品リストに入れる
+                                    const li = document.createElement('li');
+                                    li.textContent = `${title}${second ? '\t' + second : ''}`;
+                                    li.style.padding = '4px 0';
+                                    document.getElementById('sheetWorksList').appendChild(li);
+                                }
                         });
                     } catch (e) {
                         loading.textContent = 'スプレッドシートの形式を解析できませんでした。';
