@@ -148,74 +148,7 @@
                 </div>
             </div>
 
-            <script>
-                // Google スプレッドシートから一覧を取得して表示する (公開シート向け)
-                const sheetId = '17DDnw6-GUBoSaaE9DOB8qWZcNkRuhfYN_L1m9cksUao';
-                const sheetName = '';
-                function fetchSheet() {
-                    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json${sheetName?('&sheet='+encodeURIComponent(sheetName)):''}`;
-                    fetch(url).then(r => r.text()).then(text => {
-                        // Google のレスポンスは JSONP ライクなので先頭を取り除く
-                        const jsonText = text.replace(/^\s*\/\*.*?\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);\s*$/, '');
-                        const data = JSON.parse(jsonText);
-                        renderSheetData(data);
-                    }).catch(err => {
-                        console.error('sheet fetch error', err);
-                        document.getElementById('sheetLoading').textContent = 'スプレッドシートの読み込みに失敗しました。シートが公開されているか確認してください。';
-                    });
-                }
-
-                function renderSheetData(data) {
-                    const loading = document.getElementById('sheetLoading');
-                    const list = document.getElementById('sheetItems');
-                    try {
-                        const table = data.table;
-                        const cols = table.cols.map(c => c.label || c.id);
-                        // 期待するカラム例: タイトル, 種類, リンク, メモ
-                        const rows = table.rows || [];
-                        loading.style.display = 'none';
-                        list.innerHTML = '';
-                        rows.forEach(r => {
-                            const cells = r.c.map(c => c ? c.v : '');
-                            // 1列目: タイトル, 2列目: 種類/日付, 3列目: リンク, 4列目: メモ
-                                const title = cells[0] || '(タイトルなし)';
-                                const second = cells[1] || ''; // 種類や曜日など
-                                const link = cells[2] || '';
-                                const note = cells[3] || '';
-
-                                // 判定: second が「○曜日」ならラジオテーブル扱い、それ以外で『映画/ドラマ/アニメ』が含まれるなら作品テーブル扱い
-                                const isRadio = /[月火水木金土日]曜日/.test(second) || /曜日/.test(String(second));
-                                const isWork = /(映画|ドラマ|アニメ)/.test(second);
-
-                                if (isRadio) {
-                                    const li = document.createElement('li');
-                                    li.textContent = `${title}\t${second}`;
-                                    li.style.padding = '4px 0';
-                                    document.getElementById('sheetRadioList').appendChild(li);
-                                } else if (isWork) {
-                                    const li = document.createElement('li');
-                                    li.textContent = `${title}\t${second}`;
-                                    li.style.padding = '4px 0';
-                                    document.getElementById('sheetWorksList').appendChild(li);
-                                } else {
-                                    // 不明な行は作品リストに入れる
-                                    const li = document.createElement('li');
-                                    li.textContent = `${title}${second ? '\t' + second : ''}`;
-                                    li.style.padding = '4px 0';
-                                    document.getElementById('sheetWorksList').appendChild(li);
-                                }
-                        });
-                    } catch (e) {
-                        loading.textContent = 'スプレッドシートの形式を解析できませんでした。';
-                        console.error(e);
-                    }
-                }
-
-                // 実行
-                fetchSheet();
-                // 定期的に更新（例: 3分ごとに再取得）
-                setInterval(fetchSheet, 1000 * 60 * 3);
-            </script>
+            
             <script>
                 const playlistId = 'PL_0HRbJsBYMbgkg4WlKMG0kvKIdbJQZYL';
                 // 1) YouTube IFrame APIを読み込む
