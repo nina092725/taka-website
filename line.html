@@ -92,6 +92,7 @@
                 <div id="player" style="width:100%;max-width:900px;margin:0 auto;"></div>
                 <!-- プレイリストのサムネ一覧 -->
                 <div id="playlistList" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;"></div>
+                <div id="playlistControls" style="margin-top:12px;text-align:center;"></div>
             </div>
             <script>
                 const playlistId = 'PL_0HRbJsBYMbgkg4WlKMG0kvKIdbJQZYL';
@@ -101,6 +102,10 @@
                 document.body.appendChild(tag);
 
                 let player;
+                let idsGlobal = [];
+                const BATCH_SIZE = 8; // 初回表示件数
+                let renderedCount = 0;
+
                 function onYouTubeIframeAPIReady() {
                     player = new YT.Player('player', {
                         height: '360',
@@ -118,23 +123,35 @@
                 }
 
                 function onPlayerReady(event) {
-                    // プレイリストIDで初期化されたプレイヤーから動画一覧を取得
-                    // 少し待ってから取得（読み込み完了を待つ）
+                    // プレイヤーが準備できたら少し待ってからプレイリストIDを取得
                     setTimeout(buildPlaylistFromPlayer, 800);
                 }
 
-                function buildPlaylistFromPlayer() {
+                function buildPlaylistFromPlayer(retries = 0) {
                     if (!player) return;
-                    let ids = player.getPlaylist();
+                    let ids = [];
+                    try { ids = player.getPlaylist() || []; } catch(e) { ids = []; }
                     if (!ids || !ids.length) {
-                        // 取得できない場合はiframeのembedを利用したシンプルリンクのみ表示
+                        if (retries < 5) {
+                            // 少し待って再試行
+                            setTimeout(() => buildPlaylistFromPlayer(retries + 1), 600);
+                            return;
+                        }
                         const listEl = document.getElementById('playlistList');
                         listEl.innerHTML = '<div>プレイリスト情報を取得できませんでした。</div>';
                         return;
                     }
+                    idsGlobal = ids;
+                    renderedCount = 0;
+                    document.getElementById('playlistList').innerHTML = '';
+                    renderNextBatch();
+                }
+
+                function renderNextBatch() {
                     const listEl = document.getElementById('playlistList');
-                    listEl.innerHTML = '';
-                    ids.forEach((vid, idx) => {
+                    const slice = idsGlobal.slice(renderedCount, renderedCount + BATCH_SIZE);
+                    slice.forEach((vid, idx) => {
+                        const index = renderedCount + idx;
                         const item = document.createElement('div');
                         item.className = 'playlist-item';
                         item.style.width = '160px';
@@ -143,11 +160,12 @@
 
                         const a = document.createElement('a');
                         a.href = '#';
-                        a.dataset.index = idx;
+                        a.dataset.index = index;
                         a.style.textDecoration = 'none';
                         a.style.color = '#333';
 
                         const img = document.createElement('img');
+                        img.loading = 'lazy';
                         img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
                         img.alt = 'thumb';
                         img.style.width = '100%';
@@ -163,26 +181,46 @@
                         a.appendChild(titleDiv);
                         a.addEventListener('click', (e) => {
                             e.preventDefault();
-                            const index = parseInt(a.dataset.index, 10);
+                            const idx = parseInt(a.dataset.index, 10);
                             if (player && typeof player.playVideoAt === 'function') {
-                                player.playVideoAt(index);
+                                player.playVideoAt(idx);
                             } else if (player && typeof player.cuePlaylist === 'function') {
-                                player.cuePlaylist(ids, index);
+                                player.cuePlaylist(idsGlobal, idx);
                             }
                         });
 
                         item.appendChild(a);
                         listEl.appendChild(item);
 
-                        // タイトルをoEmbedで補完（できれば）
+                        // タイトルをoEmbedで補完（非同期）
                         fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`)
                             .then(r => r.json())
-                            .then(json => {
-                                titleDiv.textContent = json.title;
-                            }).catch(()=>{
-                                // 失敗してもID表示のままにする
-                            });
+                            .then(json => { titleDiv.textContent = json.title; })
+                            .catch(() => { /* 失敗してもIDのまま */ });
                     });
+                    renderedCount += slice.length;
+                    updateLoadMoreButton();
+                }
+
+                function updateLoadMoreButton() {
+                    const ctrl = document.getElementById('playlistControls');
+                    ctrl.innerHTML = '';
+                    if (renderedCount < idsGlobal.length) {
+                        const btn = document.createElement('button');
+                        btn.textContent = 'もっと見る';
+                        btn.style.padding = '8px 16px';
+                        btn.style.fontSize = '1em';
+                        btn.style.borderRadius = '8px';
+                        btn.style.border = '2px solid #660033';
+                        btn.style.background = '#fffbe7';
+                        btn.style.cursor = 'pointer';
+                        btn.addEventListener('click', () => {
+                            renderNextBatch();
+                        });
+                        ctrl.appendChild(btn);
+                    } else {
+                        // すべて表示済み
+                    }
                 }
             </script>
         </div>
