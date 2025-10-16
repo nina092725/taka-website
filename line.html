@@ -88,8 +88,103 @@
                 <li><a href="https://www.netflix.com/jp/" target="_blank">Netflixドラマ</a></li>
             </ul>
             <div style="margin-top:32px;text-align:center;">
-                <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PL_0HRbJsBYMbgkg4WlKMG0kvKIdbJQZYL" title="YouTube playlist" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <!-- プレイヤー（IFrame APIで制御） -->
+                <div id="player" style="width:100%;max-width:900px;margin:0 auto;"></div>
+                <!-- プレイリストのサムネ一覧 -->
+                <div id="playlistList" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;"></div>
             </div>
+            <script>
+                const playlistId = 'PL_0HRbJsBYMbgkg4WlKMG0kvKIdbJQZYL';
+                // 1) YouTube IFrame APIを読み込む
+                let tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                document.body.appendChild(tag);
+
+                let player;
+                function onYouTubeIframeAPIReady() {
+                    player = new YT.Player('player', {
+                        height: '360',
+                        width: '100%',
+                        playerVars: {
+                            listType: 'playlist',
+                            list: playlistId,
+                            modestbranding: 1,
+                            rel: 0
+                        },
+                        events: {
+                            'onReady': onPlayerReady
+                        }
+                    });
+                }
+
+                function onPlayerReady(event) {
+                    // プレイリストIDで初期化されたプレイヤーから動画一覧を取得
+                    // 少し待ってから取得（読み込み完了を待つ）
+                    setTimeout(buildPlaylistFromPlayer, 800);
+                }
+
+                function buildPlaylistFromPlayer() {
+                    if (!player) return;
+                    let ids = player.getPlaylist();
+                    if (!ids || !ids.length) {
+                        // 取得できない場合はiframeのembedを利用したシンプルリンクのみ表示
+                        const listEl = document.getElementById('playlistList');
+                        listEl.innerHTML = '<div>プレイリスト情報を取得できませんでした。</div>';
+                        return;
+                    }
+                    const listEl = document.getElementById('playlistList');
+                    listEl.innerHTML = '';
+                    ids.forEach((vid, idx) => {
+                        const item = document.createElement('div');
+                        item.className = 'playlist-item';
+                        item.style.width = '160px';
+                        item.style.cursor = 'pointer';
+                        item.style.textAlign = 'center';
+
+                        const a = document.createElement('a');
+                        a.href = '#';
+                        a.dataset.index = idx;
+                        a.style.textDecoration = 'none';
+                        a.style.color = '#333';
+
+                        const img = document.createElement('img');
+                        img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+                        img.alt = 'thumb';
+                        img.style.width = '100%';
+                        img.style.borderRadius = '8px';
+
+                        const titleDiv = document.createElement('div');
+                        titleDiv.textContent = vid;
+                        titleDiv.style.fontSize = '0.9em';
+                        titleDiv.style.marginTop = '6px';
+                        titleDiv.style.color = '#660033';
+
+                        a.appendChild(img);
+                        a.appendChild(titleDiv);
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const index = parseInt(a.dataset.index, 10);
+                            if (player && typeof player.playVideoAt === 'function') {
+                                player.playVideoAt(index);
+                            } else if (player && typeof player.cuePlaylist === 'function') {
+                                player.cuePlaylist(ids, index);
+                            }
+                        });
+
+                        item.appendChild(a);
+                        listEl.appendChild(item);
+
+                        // タイトルをoEmbedで補完（できれば）
+                        fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`)
+                            .then(r => r.json())
+                            .then(json => {
+                                titleDiv.textContent = json.title;
+                            }).catch(()=>{
+                                // 失敗してもID表示のままにする
+                            });
+                    });
+                }
+            </script>
         </div>
     </div>
 </body>
