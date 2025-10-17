@@ -3,12 +3,12 @@
             <!-- Google スプレッドシートから読み込むお気に入りリスト -->
             <div style="margin-top:28px; max-width:900px; margin-left:auto; margin-right:auto;">
                 <div id="sheetContainer">
-                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">ラジオ</h3>
+                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center; font-size:1.6rem;">ラジオ</h3>
                     <div id="sheetRadio" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;margin-bottom:14px;">
                         <div id="sheetLoadingRadio" style="text-align:center;color:#666;">読み込み中…</div>
                         <ul id="sheetRadioList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
                     </div>
-                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center;">映画・ドラマ</h3>
+                    <h3 style="font-family:'Banana Slip'; color:#660033; text-align:center; font-size:1.6rem;">映画・ドラマ</h3>
                     <div id="sheetWorks" style="background:#fffbe7;border-radius:12px;padding:12px;box-shadow:0 4px 12px #66003322;">
                         <div id="sheetLoadingWorks" style="text-align:center;color:#666;display:none;">読み込み中…</div>
                         <ul id="sheetWorksList" style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:6px;"></ul>
@@ -55,11 +55,13 @@
                         }
                         items.sort((a,b) => weekdayIndex(a[1]) - weekdayIndex(b[1]));
                         items.forEach(cells => {
-                            const title = cells[0] || '(タイトルなし)';
+                            const title = (cells[0] || '').toString().trim();
+                            if (!title) return; // タイトルが空なら追加しない
                             const day = cells[1] || '';
                             const li = document.createElement('li');
                             li.textContent = `${title}\t${day}`;
-                            li.style.padding = '4px 0';
+                            li.style.padding = '6px 0';
+                            li.style.fontSize = '1.05rem';
                             list.appendChild(li);
                         });
                     } catch(e) {
@@ -79,7 +81,8 @@
                         const items = rows.map(r => r.c.map(c => c ? c.v : ''));
                         const groups = {};
                         items.forEach(cells => {
-                            const title = cells[0] || '(タイトルなし)';
+                            const title = (cells[0] || '').toString().trim();
+                            if (!title) return; // 空タイトルは無視
                             const genre = (cells[1] || 'その他').toString();
                             if (!groups[genre]) groups[genre] = [];
                             groups[genre].push(title);
@@ -96,7 +99,8 @@
                                 groups[g].forEach(t => {
                                     const li = document.createElement('li');
                                     li.textContent = t;
-                                    li.style.padding = '4px 0 4px 8px';
+                                    li.style.padding = '6px 0 6px 8px';
+                                    li.style.fontSize = '1.05rem';
                                     list.appendChild(li);
                                 });
                                 delete groups[g];
@@ -112,7 +116,8 @@
                             groups[g].forEach(t => {
                                 const li = document.createElement('li');
                                 li.textContent = t;
-                                li.style.padding = '4px 0 4px 8px';
+                                li.style.padding = '6px 0 6px 8px';
+                                li.style.fontSize = '1.05rem';
                                 list.appendChild(li);
                             });
                         });
